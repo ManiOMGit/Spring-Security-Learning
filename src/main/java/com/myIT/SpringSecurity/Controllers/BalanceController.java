@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1")
-public class WelcomeController {
+public class BalanceController {
 
-    @GetMapping("/welcome")
-    public String welcome(){
-        return "Hi Welcome to Spring Security Course";
+    @GetMapping("/myBalance")
+    public String getBalanceDetails(){
+        return "Here are the details from db";
     }
 }
