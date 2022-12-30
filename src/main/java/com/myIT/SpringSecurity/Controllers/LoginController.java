@@ -5,6 +5,7 @@ import com.myIT.SpringSecurity.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/login")
 public class LoginController {
     CustomerRepository customerRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     public LoginController(CustomerRepository customerRepository) {
@@ -25,6 +28,8 @@ public class LoginController {
         Customer savedCustomer=null;
         ResponseEntity response=null;
         try{
+           String hashPwd= passwordEncoder.encode(customer.getPwd());
+           customer.setPwd(hashPwd);
             savedCustomer=customerRepository.save(customer);
             if(savedCustomer.getId()>0){
                 response=ResponseEntity.status(HttpStatus.CREATED)
