@@ -1,15 +1,30 @@
 package com.myIT.SpringSecurity.Controllers;
 
+import com.myIT.SpringSecurity.model.AccountTransactions;
+import com.myIT.SpringSecurity.repository.AccountTransactionsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1")
 public class BalanceController {
 
+    @Autowired
+    private AccountTransactionsRepository accountTransactionsRepository;
+
     @GetMapping("/myBalance")
-    public String getBalanceDetails(){
-        return "Here are the details from db";
+    public List<AccountTransactions> getBalanceDetails(@RequestParam int id) {
+        List<AccountTransactions> accountTransactions = accountTransactionsRepository.
+                findByCustomerIdOrderByTransactionDtDesc(id);
+        if (accountTransactions != null ) {
+            return accountTransactions;
+        }else {
+            return null;
+        }
     }
 }

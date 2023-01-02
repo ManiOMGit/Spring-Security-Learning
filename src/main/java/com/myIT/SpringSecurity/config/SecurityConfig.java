@@ -22,7 +22,7 @@ public class SecurityConfig {
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.csrf().disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/v1/myAccount","/api/v1/myBalance","/api/v1/myCards","/api/v1/myLoans","/")
+                .requestMatchers("/api/v1/myAccount","/api/v1/myBalance","/api/v1/myCards","/api/v1/myLoans","/login/user")
                 .authenticated()
                 .requestMatchers("/api/v1/contact","/api/v1/notices","/login/register").permitAll();
         httpSecurity.formLogin();
