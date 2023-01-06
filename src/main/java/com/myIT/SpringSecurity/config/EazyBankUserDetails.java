@@ -1,3 +1,4 @@
+/*
 package com.myIT.SpringSecurity.config;
 
 import com.myIT.SpringSecurity.model.Customer;
@@ -34,3 +35,4 @@ public class EazyBankUserDetails implements UserDetailsService {
         return new User(username,password,authorities);
     }
 }
+*/
