@@ -1,5 +1,7 @@
 package com.myIT.SpringSecurity.config;
 
+import com.myIT.SpringSecurity.Filters.AuthoritiesLoggingFilter;
+import com.myIT.SpringSecurity.Filters.PreAuthenticationCustomFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
@@ -40,6 +43,8 @@ public class SecurityConfig {
                     }
                 }).and()
                 .csrf().disable()
+                .addFilterBefore(new PreAuthenticationCustomFilter(), BasicAuthenticationFilter.class)
+                .addFilterAfter(new AuthoritiesLoggingFilter(), BasicAuthenticationFilter.class)
                 .authorizeHttpRequests()
                 /*.requestMatchers("/api/v1/myAccount").hasAuthority("VIEWACCOUNT")
                 .requestMatchers("/api/v1/myBalance").hasAnyAuthority("VIEWACCOUNT","VIEWBALANCE")

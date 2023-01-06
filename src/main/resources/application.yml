@@ -13,4 +13,5 @@ logging:
   level:
     org:
       springframework:
-        security: TRACE
+        security:
+          web.FilterChainProxy: DEBUG
