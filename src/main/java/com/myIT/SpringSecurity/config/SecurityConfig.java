@@ -61,7 +61,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/v1/myAccount").hasRole("USER")
                 .requestMatchers("/api/v1/myBalance").hasAnyRole("USER","ADMIN")
                 .requestMatchers("/api/v1/myCards").hasRole("USER")
-                .requestMatchers("/api/v1/myLoans").hasRole("USER")
+                .requestMatchers("/api/v1/myLoans")/*hasRole("USER")*/.authenticated()
                 .requestMatchers("/login/user")
                 .authenticated()
                 .requestMatchers("/api/v1/contact","/api/v1/notices","/login/register").permitAll();
