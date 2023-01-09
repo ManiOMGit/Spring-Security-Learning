@@ -1,6 +1,8 @@
 package com.myIT.SpringSecurity.config;
 
 import com.myIT.SpringSecurity.Filters.AuthoritiesLoggingFilter;
+import com.myIT.SpringSecurity.Filters.JWTTokenGeneratorFilter;
+import com.myIT.SpringSecurity.Filters.JWTTokenValidatorFilter;
 import com.myIT.SpringSecurity.Filters.PreAuthenticationCustomFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
@@ -28,7 +30,11 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity httpSecurity) throws Exception{
-        httpSecurity .securityContext().requireExplicitSave(false)
+        httpSecurity
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .securityContext().requireExplicitSave(false)
                 .and().sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
                 .cors().configurationSource(new CorsConfigurationSource() {
                     @Override
@@ -45,6 +51,8 @@ public class SecurityConfig {
                 .csrf().disable()
                 .addFilterBefore(new PreAuthenticationCustomFilter(), BasicAuthenticationFilter.class)
                 .addFilterAfter(new AuthoritiesLoggingFilter(), BasicAuthenticationFilter.class)
+                .addFilterAfter(new JWTTokenGeneratorFilter(),BasicAuthenticationFilter.class)
+                .addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
                 .authorizeHttpRequests()
                 /*.requestMatchers("/api/v1/myAccount").hasAuthority("VIEWACCOUNT")
                 .requestMatchers("/api/v1/myBalance").hasAnyAuthority("VIEWACCOUNT","VIEWBALANCE")
